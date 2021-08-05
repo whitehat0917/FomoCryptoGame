@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="190" height="177.981" viewBox="0 0 190 177.981">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#BNB_POT_1_);
+      }
+    </style>
+    <filter id="BNB_POT_1_" x="0" y="0" width="190" height="177.981" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#fe41e2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="cls-1" transform="matrix(1, 0, 0, 1, 0, 0)">
+    <path id="BNB_POT_1_2" data-name="BNB POT (1)" d="M32,0A32,32,0,0,1,64,32c0,17.673-14.327,19.981-32,19.981S0,49.673,0,32A32,32,0,0,1,32,0Z" transform="translate(63 63)"/>
+  </g>
+</svg>

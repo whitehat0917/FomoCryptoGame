@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="178.8" height="186.43" viewBox="0 0 178.8 186.43">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#Ticket_3_);
+      }
+    </style>
+    <filter id="Ticket_3_" x="0" y="0" width="178.8" height="186.43" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#fe41e2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="cls-1" transform="matrix(1, 0, 0, 1, 0, 0)">
+    <path id="Ticket_3_2" data-name="Ticket (3)" d="M32,0C49.673,0,55.65-2.123,55.65,15.55s-9.127,44.8-26.8,44.8-26-27.127-26-44.8S14.327,0,32,0Z" transform="translate(60.15 63.08)"/>
+  </g>
+</svg>

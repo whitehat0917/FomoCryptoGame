@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154.268" height="190" viewBox="0 0 154.268 190">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#Timer_2_);
+      }
+    </style>
+    <filter id="Timer_2_" x="0" y="0" width="154.268" height="190" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#fe41e2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="cls-1" transform="matrix(1, 0, 0, 1, 0, 0)">
+    <path id="Timer_2_2" data-name="Timer (2)" d="M32,0C49.673,0,46.6,6.327,46.6,24S49.673,64,32,64,19.133,41.673,19.133,24,14.327,0,32,0Z" transform="translate(44.46 63)"/>
+  </g>
+</svg>

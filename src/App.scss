@@ -1,0 +1,344 @@
+@font-face {
+  font-family: Segoe UI;
+  src: url(fonts/Segoe.ttf);
+}
+@font-face {
+  font-family: Segoe UI;
+  src: url(fonts/SegoeUIBold.ttf);
+  font-weight: 600;
+}
+@font-face {
+  font-family: Segoe UI;
+  src: url(fonts/SegoeUIBoldItalic.ttf);
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: Segoe UI;
+  src: url(fonts/SegoeUIItalic.ttf);
+  font-style: italic;
+}
+
+body {
+  font-size: 16px;
+  background: #2c254a;
+}
+$primary: #f2ba30;
+.App {
+  text-align: center;
+  color: white;
+  font-family: Segoe UI;
+}
+$left-width: 16%;
+p {
+  margin: 0;
+}
+// filter: blur(18px) drop-shadow(0px 0px 6px #fe41e2);
+.connect {
+  color: $primary;
+  border-top: 2px solid $primary;
+  border-bottom: 2px solid $primary;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  background: #2c254a;
+  margin-bottom: 20px;
+  font-size: 130%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+
+  padding-left: 20px !important;
+  // font-size: 90%;
+  font-weight: 600;
+  transition: all 0.2s linear;
+  img {
+    height: 30px;
+    padding-right: 15px;
+  }
+}
+.connect:hover,
+._button:hover {
+  color: rgb(255, 239, 210) !important;
+  text-shadow: 0 0 1px $primary;
+}
+.left-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: $left-width;
+  > div {
+    padding-left: 10px;
+  }
+  background: #3b3363;
+  .app-header {
+    font-family: Montserrat;
+    font-size: 150%;
+    padding: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    img {
+      width: 40%;
+      margin-left: -20px;
+    }
+  }
+  ._items {
+    text-align: left;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+
+    ._item {
+      padding: 10px;
+      > div {
+        display: flex;
+        align-items: center;
+        > span {
+          margin-right: 5px;
+        }
+        > span:first-child {
+          width: 15%;
+          img {
+            margin-bottom: -4px;
+            margin-right: 5px;
+          }
+        }
+      }
+      > div:nth-child(2) {
+        color: $primary;
+      }
+    }
+  }
+  ._button {
+    text-align: left;
+    padding: 8px;
+    color: $primary;
+    padding-left: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s linear;
+
+    > span {
+      display: inline-block;
+      border-radius: 10px;
+    }
+    > span:first-child {
+      margin-right: 20px;
+      width: 10px;
+      height: 10px;
+      background: #ffffff 0% 0% no-repeat padding-box;
+      box-shadow: 0px 0px 6px #fe41e2;
+      border: 1px solid #fe41e2;
+    }
+  }
+  ._button a{
+    color: $primary;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  ._button a:hover {
+    color: rgb(255, 239, 210) !important;
+    text-shadow: 0 0 1px $primary;
+  }
+}
+
+.main-body {
+  position: fixed;
+  height: 100vh;
+  left: $left-width;
+  overflow: auto;
+  top: 0;
+  width: calc(100% - #{$left-width});
+}
+
+.top-bar {
+  display: none;
+}
+
+.ReactModal__Overlay {
+  background: rgba(0, 0, 0, 0.438) !important;
+  // filter: blur(3px);
+}
+.ReactModal__Content {
+  background: #3b3363 !important;
+  color: white;
+  padding: 20px 0 !important;
+  box-shadow: inset 0px 0px 10px #000000;
+  border: 2px solid #f2ba30d9 !important;
+}
+
+.notification {
+  line-height: 1.5;
+  > div:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .button-ok {
+    margin-top: 20px;
+    width: 100px;
+    background: $primary;
+    color: white;
+    font-weight: 600;
+    border-radius: 3px;
+    font-size: 120%;
+    display: flex;
+    padding: 7px 20px;
+    align-items: center;
+    justify-content: center;
+  }
+  .first-obj {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 80%;
+    > div {
+      padding-right: 50px;
+      opacity: 0.7;
+    }
+  }
+  .sub-heading {
+    color: #f2ba30;
+    margin-bottom: 2px;
+    text-transform: capitalize;
+  }
+  .main-heading {
+    font-size: 150%;
+    color: #f2ba30;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  > div {
+    display: flex;
+  }
+  ._body {
+    padding: 15px;
+    border-bottom: 1px solid $primary;
+    padding-right: 10%;
+    > div:nth-child(2) {
+      width: 80%;
+      color: rgba(255, 255, 255, 0.699);
+    }
+  }
+  ._body:last-child {
+    border-bottom: none;
+  }
+  ._item {
+    span {
+      color: $primary;
+      padding-right: 4px;
+      font-weight: 600;
+    }
+  }
+  ._heading {
+    color: #f2ba30;
+    font-weight: 600;
+    font-size: 120%;
+    text-transform: uppercase;
+    text-align: right;
+    padding-right: 20px;
+    width: 20%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  $left-width: 45%;
+
+  .round-payouts .overtake span {
+    height: 20px;
+  }
+  .left-bar {
+    width: $left-width;
+    margin-left: -$left-width;
+    transition: all 0.2s linear;
+    .connect {
+      display: none;
+    }
+    .app-header {
+      margin-bottom: 20px;
+    }
+  }
+  .main-body {
+    left: 0;
+    width: calc(100%);
+    transition: all 0.2s linear;
+  }
+  .top-bar {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 2px solid grey;
+    position: fixed;
+    background: #2c254a;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    margin: 0 !important;
+    > img {
+      padding: 0 30px;
+      height: 30px;
+    }
+    .app-header {
+      flex-direction: row;
+      display: flex;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    > div {
+      // width: 100%;
+      img {
+        // width: 10%;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 46%;
+        top: 15px;
+        margin-left: -27px;
+      }
+    }
+  }
+  .connect {
+    margin-bottom: 0;
+    padding: 5px;
+    padding-bottom: 7px;
+    padding-top: 3px;
+    border-bottom: none;
+    border-top: none;
+    margin-right: 20px;
+    font-size: 140%;
+    img {
+      height: 30px !important;
+      width: 30px !important;
+    }
+  }
+
+  .left-bar.opened {
+    margin-left: 0;
+  }
+  .main-tt {
+    width: 100%;
+    overflow: auto;
+    .table {
+      width: 130%;
+    }
+  }
+  .main-body.opened {
+    margin-left: $left-width;
+  }
+  .notification {
+    line-height: 1.5;
+    .first-obj {
+      display: flex;
+      flex-direction: column;
+      > div {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
