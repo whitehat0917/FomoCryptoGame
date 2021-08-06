@@ -378,7 +378,7 @@ export class Home extends Component {
     for (let i=0;i<roundPotWinnersBreakdown.length;i++){
       tableData2.push(
         {
-          bnb: roundPotWinnersBreakdown[i][1] + " BNB",
+          bnb: roundPotWinnersBreakdown[i][1].toFixed(4) + " BNB",
           address: roundPotWinnersBreakdown[i][0],
           position: roundPotWinnersBreakdown[i][2],
           overtake: roundPotWinnersBreakdown[i][2],
@@ -447,10 +447,7 @@ export class Home extends Component {
                 <div
                   className="buy-button"
                   onClick={() => {
-                    setTimeout(() => {
-                      this.notify();
-                    }, 2000);
-                    setTabChanged(!tabChanged);
+                    buyTickets(wallet, contract, this.state.ticket, discountedPriceForTicket, getWallet, discountedPriceForTicketAhead, roundState, stats)
                   }}
                 >
                   {"buy"}
