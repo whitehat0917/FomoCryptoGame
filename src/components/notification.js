@@ -10,7 +10,7 @@ const firstObj = {
       heading: "After First week",
       arr: (
         <div>
-          2% to liquidity
+          4% to liquidity
           <br /> 4% to pot
           <br /> 4% to BNB divs
         </div>
@@ -20,30 +20,12 @@ const firstObj = {
       heading: "Selling Fee",
       arr: (
         <div>
-          2% to liquidity <br />
-          14% down to 4% to pot over 20 days based on the first block
-          <br /> 14% down to 4% to divs over 20 days based on the first block
+          4% to liquidity, 13% to pot,<br /> and 13% to BNB divs down to 4% to liquidity,<br /> 4% to pot, and
+          4% to BNB divs linearly over 18 days.
         </div>
       ),
     }
-  ],
-  description: (
-    <div>
-      The fees are now this:<br />
-      Buys: 4% to liquidity, 4% to pot, 4% to BNB divs<br />
-      Transfers: Nothing for first week, and then same as buys<br />
-      Sells: 4% to liquidity, 13% to pot, and 13% to BNB divs down to 4% to liquidity, 4% to pot, and
-      4% to BNB divs linearly over 18 days.<br /><br />
-      2. Tapping the down and up arrows for tickets are backwards
-      Tapping the down arrow for tickets makes the number of tickets to buy go up, not down. Up
-      arrow makes it go down.<br />
-      3. If window isn’t that tall, you cannot scroll the left bar and see the Buy Tokens and
-      View Chart buttons<br />
-      4. Make all BSC addresses link to the wallet page for that address on BSCScan<br />
-      5. Make the pot value link to the pot contract on BSCScan<br />
-      6. Make the round number link to the round contract on BSCScan
-    </div>
-  )
+  ]
 };
 
 const data = [
@@ -95,10 +77,6 @@ const Notification = () => {
               <Block data={i} />
             ))}
           </div>
-        </div>
-        <div className="_body" style={{paddingRight: '15px'}}>
-        <div className="_heading"></div>
-        {firstObj.description}
         </div>
         {data.map((i, k) => (
           <div key={k} className="_body">

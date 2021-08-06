@@ -17,16 +17,30 @@ import { shortenAddress } from '../utils';
 import { ethers } from 'ethers'
 
 const TopBlock = ({ data, style }) => {
-  const { heading, value, src, shadowSrc, type } = data;
+  const { heading, value, src, shadowSrc, href, type } = data;
   return (
     <div className={`top-block ${type && "type-" + type}`} style={{ ...style }}>
-      <div>
-        <img src={shadowSrc} />
-        <img src={src} />
-      </div>
-
-      <div>{value}</div>
-      <div>{heading}</div>
+      {
+        href ? (
+          <a style={{textDecoration: 'none'}} href={href} rel="noopener noreferrer" target="_blank">
+            <div>
+              <img src={shadowSrc} />
+              <img src={src} />
+            </div>
+            <div>{value}</div>
+            <div>{heading}</div>
+          </a>
+        ) : (
+          <>
+            <div>
+              <img src={shadowSrc} />
+              <img src={src} />
+            </div>
+            <div>{value}</div>
+            <div>{heading}</div>
+          </>
+        )
+      }
     </div>
   );
 };
@@ -245,6 +259,7 @@ export class Home extends Component {
         heading: "Round Pot Size",
         value: nanCheck(currentRoundPot) + " BNB",
         src: roundPotIco,
+        href: `https://bscscan.com/address/${pot}`,
         shadowSrc: roundPotIcoPath,
       },
       {
@@ -271,6 +286,7 @@ export class Home extends Component {
         value: roundState == 5 ? currentRoundNumber + 1 : currentRoundNumber,
         src: roundNumberIco,
         shadowSrc: roundNumberIcoPath,
+        href: `https://bscscan.com/address/${settings.currentRoundAddress}`,
         type: 4,
       }
     ];
@@ -373,9 +389,8 @@ export class Home extends Component {
     }
 
     const tableData2 = [];
-    console.log(roundPotWinnersBreakdown)
 
-    for (let i=0;i<roundPotWinnersBreakdown.length;i++){
+    for (let i = 0; i < roundPotWinnersBreakdown.length; i++) {
       tableData2.push(
         {
           bnb: roundPotWinnersBreakdown[i][1].toFixed(4) + " BNB",
@@ -482,7 +497,13 @@ export class Home extends Component {
                       <tr className={"color-" + i.status}>
                         {table1params.map((m, n) => (
                           <td className={m}>
-                            <span>{i[m]}</span>
+                            {
+                              n == 1 && i[m] != 'You' && i[m] != 'No Buyer' ?
+                                (<a href={`https://bscscan.com/address/${i[m]}`} target="_blank" rel="noopepener noreferrer">
+                                  <span>{i[m]}</span>
+                                </a>) :
+                                (<span>{i[m]}</span>)
+                            }
                           </td>
                         ))}
                       </tr>
