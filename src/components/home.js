@@ -413,7 +413,7 @@ export class Home extends Component {
           <TopBlock data={topBarData[2]} style={{ marginRight: "2%" }} />
           <TopBlock data={topBarData[3]} />
         </div>
-        {!buysDisabled ? (
+        {!tabChanged ? (
           <>
             <div className="main-blocks">
               <div className="_block left">

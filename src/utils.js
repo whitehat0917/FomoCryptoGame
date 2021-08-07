@@ -10,7 +10,6 @@ export const getFixedLength = x => {
   if (x.toString().split(".").length > 1)
   {
     var temp = x.toString().split(".")[1];
-    console.log(temp)
     for (let i=0;i<temp.length;i++){
       if (temp[i] == '0'){
         length++;

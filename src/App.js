@@ -66,19 +66,21 @@ class App extends Component {
     await metamask.send("eth_requestAccounts", []);
     const wallet = metamask.getSigner();
     const address = await wallet.getAddress()
+    console.log(metamask.provider.chainId)
 
     let loaded = true
 
     if (this.state.username != address) {
       loaded = false
     }
-
-    this.setState({
-      loaded: loaded,
-      wallet: wallet,
-      username: address,
-      contract: new ethers.Contract(addy, abi, wallet)
-    })
+    if (metamask.provider.chainId == '0x38'){
+      this.setState({
+        loaded: loaded,
+        wallet: wallet,
+        username: address,
+        contract: new ethers.Contract(addy, abi, wallet)
+      })
+    }
   }
 
   getRoundPotWinnersBreakdown = (stats, settings) => {
