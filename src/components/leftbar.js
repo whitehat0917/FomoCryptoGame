@@ -7,7 +7,7 @@ import ticketIco from "../assets/ticket.svg";
 import spentIco from "../assets/spent.svg";
 import diviIco from "../assets/dividends.svg";
 import barIco from "../assets/Menu.svg";
-import { shortenAddress } from '../utils';
+import { shortenAddress, getFixedLength } from '../utils';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -56,8 +56,8 @@ export const TopBar = ({ setTabChanged, setMenuOpened }) => {
   );
 };
 
-const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState }) => {
-  const { username, holderType, wallet, getWallet, stats, ca, roundState } = mainState;
+const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState, connect }) => {
+  const { username, holderType, wallet, stats, ca, roundState } = mainState;
   let leftBarItem = [];
   leftBarItem.push(
     {
@@ -83,14 +83,14 @@ const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState }) => {
   leftBarItem.push(
     {
       heading: "Your BNB Spent",
-      value: stats ? (isNaN(stats.userTotalSpentOnTickets) || roundState == 5) ? '0 BNB' : stats.userTotalSpentOnTickets.toPrecision(6) + " BNB" : '0 BNB',
+      value: stats ? (isNaN(stats.userTotalSpentOnTickets) || roundState == 5) ? '0 BNB' : stats.userTotalSpentOnTickets.toFixed(getFixedLength(stats.userTotalSpentOnTickets) + 3) + " BNB" : '0 BNB',
       src: spentIco,
     }
   );
   leftBarItem.push(
     {
       heading: "Pending Dividends",
-      value: stats ? stats.userWithdrawableDividend ? stats.userWithdrawableDividend.toPrecision(6) + " BNB" : '0 BNB' : '0 BNB',
+      value: stats ? stats.userWithdrawableDividend ? stats.userWithdrawableDividend.toFixed(getFixedLength(stats.userWithdrawableDividend) + 3) + " BNB" : '0 BNB' : '0 BNB',
       src: diviIco,
     }
   );
@@ -105,19 +105,32 @@ const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState }) => {
         <img className="app-ico" src={AppIco}></img>
         <div>MrsDoge</div>
       </div>
-      <div className="connect">
-        <img src={MetaMask} alt="" />
-        <span>connect</span>
-      </div>
+      {
+        !wallet &&
+        <div className="connect" onClick={connect}>
+          <img src={MetaMask} alt="" />
+          <span>connect</span>
+        </div>
+      }
       <div className="_items">
         <div className="_item">
           <div>
             <span>
               <img src={connectIco} alt="connect Metamask" />
             </span>
-            <span onClick={() => wallet ? null : getWallet()}>
-              {username ? shortenAddress(username) : 'Connect Wallet'}
-            </span>
+            {
+              username ?
+                (
+                  <a href={`https://bscscan.com/address/${username}`} target="_blank" rel="noopepener noreferrer">
+                    <span>{shortenAddress(username)}</span>
+                  </a>
+                ) : 
+                (
+                  <span onClick={connect} style={{cursor: 'pointer'}}>
+                    Connect Wallet
+                  </span>
+                )
+            }
           </div>
           <div>
             <span></span>
@@ -136,10 +149,10 @@ const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState }) => {
           <span>Buy Tokens</span>
         </a>
       </div>
-      <div className="_button">
+      <div className="_button" style={{paddingBottom: '30px'}}>
         <span></span>
         <a href={`https://poocoin.app/tokens/${ca}`} target="_blank" rel="noopepener noreferrer">
-        <span>View Chart</span>
+          <span>View Chart</span>
         </a>
       </div>
     </div>

@@ -13,7 +13,7 @@ import "./home.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TopBar } from "./leftbar";
-import { shortenAddress } from '../utils';
+import { shortenAddress, getFixedLength } from '../utils';
 import { ethers } from 'ethers'
 
 const TopBlock = ({ data, style }) => {
@@ -121,7 +121,7 @@ export class Home extends Component {
   }
 
   increment = (val) => {
-    if (this.state.ticket + val >= 0)
+    if (this.state.ticket + val >= 1)
       this.setState({ ticket: +this.state.ticket + val })
   }
 
@@ -202,13 +202,6 @@ export class Home extends Component {
     return (this.parse(topBuyerData[num * 6]) / totalTickets) * 100
   }
 
-  nanCheck = (item) => {
-    if (isNaN(item)) {
-      return 0
-    }
-    return item
-  }
-
   completeRound(wallet, contract) {
     if (wallet && contract) {
       const encodedABI = contract.interface.encodeFunctionData('completeRound', [])
@@ -257,7 +250,7 @@ export class Home extends Component {
     const topBarData = [
       {
         heading: "Round Pot Size",
-        value: nanCheck(currentRoundPot) + " BNB",
+        value: parseFloat(nanCheck(currentRoundPot)).toFixed(getFixedLength(nanCheck(currentRoundPot))+3) + " BNB",
         src: roundPotIco,
         href: `https://bscscan.com/address/${pot}`,
         shadowSrc: roundPotIcoPath,
@@ -276,7 +269,7 @@ export class Home extends Component {
       },
       {
         heading: "ticket price",
-        value: roundState == 5 ? priceForTicket ? Number(priceForTicket).toFixed(6) : 0 : priceForTicketCurrent ? Number(priceForTicketCurrent).toFixed(6) : 0 + " BNB",
+        value: roundState == 5 ? priceForTicket ? Number(priceForTicket).toFixed(getFixedLength(priceForTicket)+3) + " BNB" : "0 BNB" : priceForTicketCurrent ? Number(priceForTicketCurrent).toFixed(getFixedLength(Number(priceForTicket))+3) + " BNB" : 0 + " BNB",
         src: ticketPriceIco,
         shadowSrc: ticketPriceIcoPath,
         type: 3,
@@ -295,37 +288,37 @@ export class Home extends Component {
       {
         heading: "last Buyer Position",
         value1: "1 ticket",
-        value2: (discountedPriceForTicketCurrent).toPrecision(6) + " BNB",
+        value2: (discountedPriceForTicketCurrent).toFixed(getFixedLength(discountedPriceForTicketCurrent)+3) + " BNB",
       },
       {
         heading: "Last Buyer Payout",
         value1: (settings.activeSettings.lastBuyerPayoutPercent) + "%",
-        value2: ((settings.activeSettings.lastBuyerPayoutPercent / 100) * currentRoundPot * (1 + stats.userBonus)).toPrecision(6) + " BNB",
+        value2: ((settings.activeSettings.lastBuyerPayoutPercent / 100) * currentRoundPot * (1 + stats.userBonus)).toFixed(getFixedLength(((settings.activeSettings.lastBuyerPayoutPercent / 100) * currentRoundPot * (1 + stats.userBonus)))+3) + " BNB",
       },
       {
         heading: "Top Buyer Position",
         value1: (topBuyer.ticketsBought + 1 - stats.userTicketsBought).toString() + " tickets",
-        value2: ((topBuyer.ticketsBought + 1 - stats.userTicketsBought) * discountedPriceForTicketCurrent).toPrecision(6) + " BNB",
+        value2: ((topBuyer.ticketsBought + 1 - stats.userTicketsBought) * discountedPriceForTicketCurrent).toFixed(getFixedLength(((topBuyer.ticketsBought + 1 - stats.userTicketsBought) * discountedPriceForTicketCurrent))+3) + " BNB",
       },
       {
         heading: "Top Buyer Payout",
         value1: (settings.activeSettings.placePayoutPercents[0]) + "%",
-        value2: ((settings.activeSettings.placePayoutPercents[0] / 100) * currentRoundPot * (1 + stats.userBonus)).toPrecision(6) + " BNB",
+        value2: ((settings.activeSettings.placePayoutPercents[0] / 100) * currentRoundPot * (1 + stats.userBonus)).toFixed(getFixedLength(((settings.activeSettings.placePayoutPercents[0] / 100) * currentRoundPot * (1 + stats.userBonus)))+3) + " BNB",
       },
     ];
 
     const RoundStatsData = [
       {
         heading: "Bought tickets",
-        value: (roundState != 5 ? stats.ticketsBought : 0) + " tickets",
+        value: roundState != 5 ? stats.ticketsBought == 1 ? "1 ticket" : stats.ticketsBought+" tickets" : "0 ticket",
       },
       {
         heading: "Spent on tickets",
-        value: (roundState != 5 ? Number(stats.totalSpentOnTickets).toPrecision(6) : 0) + " BNB",
+        value: (roundState != 5 ? Number(stats.totalSpentOnTickets).toFixed(getFixedLength(Number(stats.totalSpentOnTickets))+3) : 0) + " BNB",
       },
       {
         heading: "Burned Tokens (Buy back)",
-        value: (roundState != 5 ? numberWithCommas(Number(stats.tokensBurned).toFixed(0)) : 0) + " BNB",
+        value: roundState != 5 ? numberWithCommas(Number(stats.tokensBurned).toFixed(0)) : 0
       },
     ];
 
@@ -343,7 +336,7 @@ export class Home extends Component {
       }
       const top = (index == 0 || index == 1 || index == 2)
 
-      return { rank: index + 1, address: this.addressCheck(roundState == 5 ? '' : address === username ? 'You' : address), tickets: roundState == 5 ? 'N/A' : this.naWrapper(ticketsBought), toWin: roundState == 5 ? 0 : top ? winnerAmounts[index + 1] : 0, lastBuy: roundState == 5 ? 'N/A' : this.naWrapper(lastBuy), overtake: 'buy', status: (index == 0 || index == 1 || index == 2) ? true : false }
+      return { rank: index + 1, address: this.addressCheck(roundState == 5 ? '' : address === username ? 'You' : address), tickets: roundState == 5 ? 'N/A' : this.naWrapper(ticketsBought), toWin: roundState == 5 ? 0 : top ? winnerAmounts[index + 1].toFixed(getFixedLength(winnerAmounts[index + 1])+3) + " BNB" : "0 BNB", lastBuy: roundState == 5 ? 'N/A' : this.naWrapper(lastBuy), overtake: 'buy', status: (index == 0 || index == 1 || index == 2) ? true : false }
     }
 
     const buyTickets = (wallet, contract, num, priceForTicket, getWallet, priceForTicketAhead, roundState) => {
@@ -392,7 +385,7 @@ export class Home extends Component {
     for (let i = 0; i < roundPotWinnersBreakdown.length; i++) {
       tableData2.push(
         {
-          bnb: roundPotWinnersBreakdown[i][1].toFixed(4) + " BNB",
+          bnb: roundPotWinnersBreakdown[i][1].toFixed(getFixedLength(roundPotWinnersBreakdown[i][1])+3) + " BNB",
           address: roundPotWinnersBreakdown[i][0],
           position: roundPotWinnersBreakdown[i][2],
           overtake: roundPotWinnersBreakdown[i][2],
@@ -442,8 +435,9 @@ export class Home extends Component {
                       type="number"
                       value={this.state.ticket}
                       onChange={(e) => this.setState({ ticket: e.target.value })}
+                      min="1"
                     />
-                    <span>Tickets</span>
+                    <span>{this.state.ticket == 1 ? `Ticket` : `Tickets`}</span>
                   </span>
                   <img src={upIco} onClick={() => this.increment(1)} />
                 </div>

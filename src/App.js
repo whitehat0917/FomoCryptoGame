@@ -10,6 +10,7 @@ import GameStats from "./GameStats"
 import Settings from "./Settings"
 import abi from "./ContractABI"
 
+// const provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/")
 const provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.defibit.io/")
 // const provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545/")
 
@@ -302,12 +303,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getMetamaskWallet()
     this.setState({
       mdShow: true
     })
 
     const c = new ethers.Contract(addy, abi, provider)
+    this.setState({ contract: c });
     c.gameStats('0x0000000000000000000000000000000000000007').then(stats => {
       c.settings().then(settings => {
 
@@ -319,7 +320,6 @@ class App extends Component {
         const cooldownTimeLeft = stats.calculateCooldownTimeLeft(settings.currentRoundSettings.gameCooldownBlocks)
 
         this.getMetamaskWallet().then(_ => {
-
           this.setState({
             ca: addy,
             pot: pot,
@@ -333,7 +333,6 @@ class App extends Component {
             priceForTicketAhead: settings.calculateCurrentTicketPrice(stats) * 1.05,
             priceForTicketCurrent: settings.calculateCurrentTicketPrice(stats),
             loaded: true,
-            contract: c,
             priceForTicket: settings.calculateCurrentTicketPrice(stats),
             //ticketPriceIncreasePerBlock: this.nanCheck(parseInt(settings.contractRoundSettings.ticketPriceIncreasePerBlock._hex, 16)/1e18),
             currentRoundNumber: stats.roundNumber,
@@ -343,10 +342,8 @@ class App extends Component {
             topBuyerAddress: stats.topBuyerAddress,
             topBuyerData: stats.topBuyerData,
           })
-          this.poll()
-
         })
-
+        this.poll()
       })
     })
 
@@ -362,6 +359,7 @@ class App extends Component {
           setTabChanged={this.setTabChanged}
           menuOpened={this.state.menuOpened}
           mainState={this.state}
+          connect={this.getMetamaskWallet}
         />
         <div className={`main-body ${this.state.menuOpened && "opened"}`}>
           {
