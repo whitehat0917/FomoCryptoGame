@@ -242,8 +242,6 @@ class App extends Component {
   }
 
   updateUI = () => {
-    this.getMetamaskWallet()
-
     if (this.state.stats) {
       const obj = { timeLeft: this.state.stats.calculateTimeLeft(), cooldownTimeLeft: this.state.stats.calculateCooldownTimeLeft(this.state.settings.currentRoundSettings.gameCooldownBlocks) }
 
@@ -304,6 +302,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getMetamaskWallet()
     this.setState({
       mdShow: true
     })
@@ -351,7 +350,7 @@ class App extends Component {
       })
     })
 
-    setInterval(this.updateUI.bind(this), 100)
+    setInterval(this.updateUI.bind(this), 1000)
   }
 
   render() {

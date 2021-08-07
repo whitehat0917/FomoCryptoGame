@@ -373,7 +373,6 @@ export class Home extends Component {
             setTimeout(() => {
               this.notify();
             }, 2000);
-            setTabChanged(!tabChanged);
           })
 
         })
@@ -421,7 +420,7 @@ export class Home extends Component {
           <TopBlock data={topBarData[2]} style={{ marginRight: "2%" }} />
           <TopBlock data={topBarData[3]} />
         </div>
-        {!tabChanged ? (
+        {!buysDisabled ? (
           <>
             <div className="main-blocks">
               <div className="_block left">
