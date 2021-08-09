@@ -66,7 +66,7 @@ $primary: #f2ba30;
     font-size: 160%;
     font-weight: 600;
   }
-  > div:nth-child(3), > a > div:nth-child(3) {
+  > div:nth-child(3), > div:nth-child(5), > a > div:nth-child(3) {
     opacity: 0.6;
     font-size: 85%;
     margin-top: 4px;
@@ -327,10 +327,10 @@ input[type="number"] {
   th {
     padding: 10px;
   }
-  td:last-child,
-  th:last-child {
-    text-align: right;
-  }
+  // td:last-child,
+  // th:last-child {
+  //   text-align: right;
+  // }
 
   .rank {
     span {
@@ -363,6 +363,7 @@ input[type="number"] {
       color: #2c254a;
       font-weight: 600;
       text-transform: uppercase;
+      cursor: pointer;
     }
   }
 }

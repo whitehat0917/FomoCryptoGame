@@ -63,17 +63,20 @@ class App extends Component {
       return null
     }
     // Prompt user for account connections
-    await metamask.send("eth_requestAccounts", []);
+    try {
+      await metamask.send("eth_requestAccounts", []);
+    } catch (e) {
+      return null
+    }
     const wallet = metamask.getSigner();
     const address = await wallet.getAddress()
-    console.log(metamask.provider.chainId)
 
     let loaded = true
 
     if (this.state.username != address) {
       loaded = false
     }
-    if (metamask.provider.chainId == '0x38'){
+    if (metamask.provider.chainId == '0x38') {
       this.setState({
         loaded: loaded,
         wallet: wallet,
@@ -81,6 +84,42 @@ class App extends Component {
         contract: new ethers.Contract(addy, abi, wallet)
       })
     }
+  }
+
+  checkMetamask = async () => {
+    let metamask;
+      try {
+        metamask = new ethers.providers.Web3Provider(window.ethereum, 56);
+      } catch (e) {
+        console.log('wrong chain')
+        return null
+      }
+      // Prompt user for account connections
+      let loaded = true
+      try {
+        const wallet = metamask.getSigner();
+        if (wallet.provider.provider._state.accounts){
+          const address = await wallet.getAddress()  
+          if (this.state.username != address && metamask.provider.chainId == '0x38') {
+            loaded = false;
+            this.setState({
+              loaded: loaded,
+              wallet: wallet,
+              username: address,
+              contract: new ethers.Contract(addy, abi, wallet)
+            })
+          }
+        }
+      } catch (e) {
+        console.log(e)
+        this.setState({
+          loaded: loaded,
+          wallet: null,
+          username: null,
+          contract: new ethers.Contract(addy, abi, provider)
+        })
+        return;
+      }
   }
 
   getRoundPotWinnersBreakdown = (stats, settings) => {
@@ -245,6 +284,7 @@ class App extends Component {
   }
 
   updateUI = () => {
+    this.checkMetamask();
     if (this.state.stats) {
       const obj = { timeLeft: this.state.stats.calculateTimeLeft(), cooldownTimeLeft: this.state.stats.calculateCooldownTimeLeft(this.state.settings.currentRoundSettings.gameCooldownBlocks) }
 
