@@ -424,7 +424,7 @@ export class Home extends Component {
           }
           <TopBlock data={topBarData[3]} />
         </div>
-        {!tabChanged ? (
+        {!buysDisabled ? (
           <>
             <div className="main-blocks">
               <div className="_block left">
@@ -511,9 +511,9 @@ export class Home extends Component {
                                 ) :
                                 (
                                   n === 5 ? (
-                                    this.props.mainState.roundState === 1 &&
+                                    (this.props.mainState.roundState === 1 && i['address'] !== 'No Buyer') &&
                                     <span onClick={() => {
-                                      buyTickets(wallet, contract, i['Tickets'] && !isNaN(i['Tickets']) ? i['Tickets'] : 1, discountedPriceForTicket, getWallet, discountedPriceForTicketAhead, roundState, stats)
+                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? i['tickets'] : 1, discountedPriceForTicket, getWallet, discountedPriceForTicketAhead, roundState, stats)
                                     }}>{i[m]}</span>
                                   ) : (
                                     <span>{i[m]}</span>
