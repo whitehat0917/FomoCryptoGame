@@ -493,7 +493,7 @@ export class Home extends Component {
                 <table className="table">
                   <thead>
                     {table1params.map((i, k) => (
-                      (k !== 5 || this.props.mainState.roundState === 1) &&
+                      (k !== 5 || this.props.mainState.roundState !== 1) &&
                       <th key={k}>{i.replace(/([a-z])([A-Z])/g, "$1 $2")}</th>
                     ))}
                   </thead>
