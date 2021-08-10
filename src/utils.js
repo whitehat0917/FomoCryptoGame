@@ -4,14 +4,14 @@ export const shortenAddress = address => {
 
 export const getFixedLength = x => {
   var length = 0;
-  if (x == 0){
+  if (x === 0){
     length = -3;
   }
   if (x.toString().split(".").length > 1)
   {
     var temp = x.toString().split(".")[1];
     for (let i=0;i<temp.length;i++){
-      if (temp[i] == '0'){
+      if (temp[i] === '0'){
         length++;
       }else{
         break;

@@ -1,5 +1,4 @@
-import logo from "./logo.svg";
-import LeftBar, { TopBar } from "./components/leftbar";
+import LeftBar from "./components/leftbar";
 import Home from "./components/home";
 import Notification from "./components/notification";
 import React, { Component } from 'react';
@@ -16,34 +15,6 @@ const provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.def
 
 const addy = '0xad9653f63b6c5F3F68839027f98b16E632689E82'
 const pot = '0x68561ef4c33Fa481037b28C208EAA8FE8B121FA2'
-
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
-function parse(item) {
-  return item ? parseInt(item._hex, 16) : undefined
-}
-
-function toFixed(x) {
-  if (Math.abs(x) < 1.0) {
-    var e = parseInt(x.toString().split('e-')[1]);
-    if (e) {
-      x *= Math.pow(10, e - 1);
-      x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
-    }
-  } else {
-    var e = parseInt(x.toString().split('+')[1]);
-    if (e > 20) {
-      e -= 20;
-      x /= Math.pow(10, e);
-      x += (new Array(e + 1)).join('0');
-    }
-  }
-  return x;
-}
-
 
 class App extends Component {
   setTabChanged = val => {
@@ -73,10 +44,10 @@ class App extends Component {
 
     let loaded = true
 
-    if (this.state.username != address) {
+    if (this.state.username !== address) {
       loaded = false
     }
-    if (metamask.provider.chainId == '0x38') {
+    if (metamask.provider.chainId === '0x38') {
       this.setState({
         loaded: loaded,
         wallet: wallet,
@@ -100,7 +71,7 @@ class App extends Component {
         const wallet = metamask.getSigner();
         if (wallet.provider.provider._state.accounts){
           const address = await wallet.getAddress()  
-          if (this.state.username != address && metamask.provider.chainId == '0x38') {
+          if (this.state.username !== address && metamask.provider.chainId === '0x38') {
             loaded = false;
             this.setState({
               loaded: loaded,
@@ -138,7 +109,7 @@ class App extends Component {
       array.push([name, amount, percent, color])
     }
 
-    if (stats.lastBuyer != '0x0000000000000000000000000000000000000000') {
+    if (stats.lastBuyer !== '0x0000000000000000000000000000000000000000') {
       add(shortenAddress(stats.lastBuyer) + ' - Last Buyer', activeSettings.lastBuyerPayoutPercent, "#F66D44", stats.lastBuyerPayout, stats.lastBuyerBonus, stats.lastBuyerBalance)
     } else {
       add('Last Buyer', activeSettings.lastBuyerPayoutPercent, "#F66D44", stats.lastBuyerPayout, stats.lastBuyerBonus, stats.lastBuyerBalance)
@@ -192,7 +163,7 @@ class App extends Component {
 
 
   roundState = (stats, settings, timeLeft, cooldownTimeLeft) => {
-    if (stats.roundNumber == 0) {
+    if (stats.roundNumber === 0) {
       // "Game Has Not Yet Begun"
       return 4
     }
@@ -204,15 +175,15 @@ class App extends Component {
       // "Checking For Last-Second Entries..."
       return 2
     }
-    if ((stats.blocksLeft < 0) && stats.endTimestamp == 0) {
+    if ((stats.blocksLeft < 0) && stats.endTimestamp === 0) {
       // "Round Complete - Awaiting Payouts..."
       return 3
     }
-    if (stats.endTimestamp != 0 && cooldownTimeLeft >= 0) {
+    if (stats.endTimestamp !== 0 && cooldownTimeLeft >= 0) {
       // "Rounded Has Ended - On Cooldown"
       return 0
     }
-    if (stats.endTimestamp != 0 && cooldownTimeLeft < 0) {
+    if (stats.endTimestamp !== 0 && cooldownTimeLeft < 0) {
       // "Buy a Ticket To Start the Round!"
       return 5
     }
@@ -260,7 +231,7 @@ class App extends Component {
           holderType: holder,
           roundState: this.roundState(stats, settings, timeLeft, cooldownTimeLeft),
           // buysDisabled: false, 
-          buysDisabled: this.roundState(stats, settings, timeLeft, cooldownTimeLeft) == 3 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) == 0 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) == 4,
+          buysDisabled: this.roundState(stats, settings, timeLeft, cooldownTimeLeft) === 3 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) === 0 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) === 4,
           // priceForTicketAhead: settings.calculateCurrentTicketPriceAfterNBlocks(stats, 30),
           priceForTicketAhead: settings.calculateCurrentTicketPrice(stats) * 1.05,
           priceForTicketCurrent: settings.calculateCurrentTicketPrice(stats),
@@ -371,7 +342,7 @@ class App extends Component {
             cooldownTimeLeft: cooldownTimeLeft,
             // buysDisabled: false,
             roundState: this.roundState(stats, settings, timeLeft, cooldownTimeLeft),
-            buysDisabled: this.roundState(stats, settings, timeLeft, cooldownTimeLeft) == 3 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) == 0 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) == 4,
+            buysDisabled: this.roundState(stats, settings, timeLeft, cooldownTimeLeft) === 3 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) === 0 || this.roundState(stats, settings, timeLeft, cooldownTimeLeft) === 4,
             priceForTicketAhead: settings.calculateCurrentTicketPrice(stats) * 1.05,
             priceForTicketCurrent: settings.calculateCurrentTicketPrice(stats),
             loaded: true,

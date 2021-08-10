@@ -37,6 +37,7 @@ export const TopBar = ({ setTabChanged, setMenuOpened }) => {
         className="app-ico"
         src={barIco}
         onClick={() => setMenuOpened((val) => !val)}
+        alt="app-icon"
       ></img>
 
       <div
@@ -45,7 +46,7 @@ export const TopBar = ({ setTabChanged, setMenuOpened }) => {
           setTabChanged(false);
         }}
       >
-        <img className="app-ico" src={AppIco}></img>
+        <img className="app-ico" src={AppIco} alt="app-icon"></img>
         {/* <div>MrsDoge</div> */}
       </div>
       <div className="connect">
@@ -56,8 +57,8 @@ export const TopBar = ({ setTabChanged, setMenuOpened }) => {
   );
 };
 
-const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState, connect }) => {
-  const { username, holderType, wallet, stats, ca, roundState } = mainState;
+const LeftBar = ({ setTabChanged, menuOpened, mainState, connect }) => {
+  const { username, wallet, stats, ca, roundState } = mainState;
   let leftBarItem = [];
   leftBarItem.push(
     {
@@ -76,14 +77,14 @@ const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState, connect }) 
   leftBarItem.push(
     {
       heading: "Your Tickets",
-      value: stats ? (isNaN(stats.userTicketsBought) || roundState == 5) ? '0 Tickets' : stats.userTicketsBought == 1 ? stats.userTicketsBought + " Ticket" : stats.userTicketsBought + " Tickets" : '0 Tickets',
+      value: stats ? (isNaN(stats.userTicketsBought) || roundState === 5) ? '0 Tickets' : stats.userTicketsBought === 1 ? stats.userTicketsBought + " Ticket" : stats.userTicketsBought + " Tickets" : '0 Tickets',
       src: ticketIco,
     }
   );
   leftBarItem.push(
     {
       heading: "Your BNB Spent",
-      value: stats ? (isNaN(stats.userTotalSpentOnTickets) || roundState == 5) ? '0 BNB' : stats.userTotalSpentOnTickets.toFixed(getFixedLength(stats.userTotalSpentOnTickets) + 3) + " BNB" : '0 BNB',
+      value: stats ? (isNaN(stats.userTotalSpentOnTickets) || roundState === 5) ? '0 BNB' : stats.userTotalSpentOnTickets.toFixed(getFixedLength(stats.userTotalSpentOnTickets) + 3) + " BNB" : '0 BNB',
       src: spentIco,
     }
   );
@@ -102,7 +103,7 @@ const LeftBar = ({ tabChanged, setTabChanged, menuOpened, mainState, connect }) 
           setTabChanged(false);
         }}
       >
-        <img className="app-ico" src={AppIco}></img>
+        <img className="app-ico" src={AppIco} alt="app-icon"></img>
         <div>MrsDoge</div>
       </div>
       {

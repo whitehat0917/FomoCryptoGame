@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Modal from "react-modal";
-import Close from "../assets/close_window.svg";
 
 const firstObj = {
   heading: "fees",

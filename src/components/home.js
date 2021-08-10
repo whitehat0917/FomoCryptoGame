@@ -24,8 +24,8 @@ const TopBlock = ({ data, style }) => {
         href ? (
           <a style={{ textDecoration: 'none' }} href={href} rel="noopener noreferrer" target="_blank">
             <div>
-              <img src={shadowSrc} />
-              <img src={src} />
+              <img src={shadowSrc} alt="block-icon" />
+              <img src={src} alt="block-icon" />
             </div>
             <div>{value}</div>
             <div>{heading}</div>
@@ -33,8 +33,8 @@ const TopBlock = ({ data, style }) => {
         ) : (
           <>
             <div>
-              <img src={shadowSrc} />
-              <img src={src} />
+              <img src={shadowSrc} alt="block-icon" />
+              <img src={src} alt="block-icon" />
             </div>
             <div>{value}</div>
             <div>{heading}</div>
@@ -106,7 +106,7 @@ const formatAMPM = (date) => {
 }
 
 const gettdstyle = (val, status, param) => {
-  if (param != "overtake") return;
+  if (param !== "overtake") return;
   switch (status) {
     case true:
       return `linear-gradient(90deg, #6ED9E0 ${val}%, white ${0}%)`;
@@ -134,7 +134,7 @@ export class Home extends Component {
   }
 
   notify = () => {
-    toast(`You bought ${this.state.ticket == 1 ? this.state.ticket+" ticket" : this.state.ticket+" tickets"}`)
+    toast(`You bought ${this.state.ticket === 1 ? this.state.ticket+" ticket" : this.state.ticket+" tickets"}`)
   }
 
   componentDidMount() {
@@ -238,7 +238,7 @@ export class Home extends Component {
   }
 
   render() {
-    const { stats, ca, pot, buysDisabled, roundState, priceForTicketCurrent, settings, loaded, getWallet, wallet, priceForTicketAhead, timeLeft, contract, priceForTicket, priceForTicketsToTakeFirst, currentRoundNumber, lastBuyer, currentBlocksLeft, currentRoundPot, currentBlocksLeftAtLastBuy, currentLastBuyBlock, currentBlockTime, currentBlockNumber, topBuyerAddress, topBuyerData, username, tokensHeld, holderType, roundPotBreakdown, roundPotWinnersBreakdown, realRoundPot } = this.props.mainState;
+    const { stats, pot, buysDisabled, roundState, priceForTicketCurrent, settings, getWallet, wallet, priceForTicketAhead, contract, priceForTicket, currentRoundNumber, currentRoundPot, username, roundPotWinnersBreakdown } = this.props.mainState;
     const { tabChanged, setTabChanged, setMenuOpened } = this.props;
 
     const winnerRecipients = [], winnerAmounts = [], winnerColors = []
@@ -265,8 +265,7 @@ export class Home extends Component {
       {
         heading: (
           <p>
-            buy tickets to start <br />
-            the round
+            Time Left
           </p>
         ),
         value: this.state.timerText,
@@ -276,16 +275,16 @@ export class Home extends Component {
       },
       {
         heading: "ticket price",
-        value: roundState == 5 ? priceForTicket ? Number(priceForTicket).toFixed(getFixedLength(priceForTicket) + 3) + " BNB" : "0 BNB" : priceForTicketCurrent ? Number(priceForTicketCurrent).toFixed(getFixedLength(Number(priceForTicket)) + 3) + " BNB" : 0 + " BNB",
+        value: roundState === 5 ? priceForTicket ? Number(priceForTicket).toFixed(getFixedLength(priceForTicket) + 3) + " BNB" : "0 BNB" : priceForTicketCurrent ? Number(priceForTicketCurrent).toFixed(getFixedLength(Number(priceForTicket)) + 3) + " BNB" : 0 + " BNB",
         heading2: "Your Holder Discounted Price",
-        value2: (roundState == 5 ? discountedPriceForTicket.toFixed(getFixedLength(discountedPriceForTicket) + 3) : discountedPriceForTicketCurrent.toFixed(getFixedLength(discountedPriceForTicketCurrent) + 3)) + " BNB (-" + ((stats.userBonus) * 100).toFixed(1) + "%)",
+        value2: (roundState === 5 ? discountedPriceForTicket.toFixed(getFixedLength(discountedPriceForTicket) + 3) : discountedPriceForTicketCurrent.toFixed(getFixedLength(discountedPriceForTicketCurrent) + 3)) + " BNB (-" + ((stats.userBonus) * 100).toFixed(1) + "%)",
         src: ticketPriceIco,
         shadowSrc: ticketPriceIcoPath,
         type: 3,
       },
       {
         heading: "Round number",
-        value: roundState == 5 ? currentRoundNumber + 1 : currentRoundNumber,
+        value: roundState === 5 ? currentRoundNumber + 1 : currentRoundNumber,
         src: roundNumberIco,
         shadowSrc: roundNumberIcoPath,
         href: `https://bscscan.com/address/${settings.currentRoundAddress}`,
@@ -306,7 +305,7 @@ export class Home extends Component {
       },
       {
         heading: "Top Buyer Position",
-        value1: (topBuyer.ticketsBought + 1 - stats.userTicketsBought).toString() + ((topBuyer.ticketsBought + 1 - stats.userTicketsBought) == 1 ? " ticket" : " tickets"),
+        value1: (topBuyer.ticketsBought + 1 - stats.userTicketsBought).toString() + ((topBuyer.ticketsBought + 1 - stats.userTicketsBought) === 1 ? " ticket" : " tickets"),
         value2: ((topBuyer.ticketsBought + 1 - stats.userTicketsBought) * discountedPriceForTicketCurrent).toFixed(getFixedLength(((topBuyer.ticketsBought + 1 - stats.userTicketsBought) * discountedPriceForTicketCurrent)) + 3) + " BNB",
       },
       {
@@ -319,15 +318,15 @@ export class Home extends Component {
     const RoundStatsData = [
       {
         heading: "Bought tickets",
-        value: roundState != 5 ? stats.ticketsBought == 1 ? "1 ticket" : stats.ticketsBought + " tickets" : "0 tickets",
+        value: roundState !== 5 ? stats.ticketsBought === 1 ? "1 ticket" : stats.ticketsBought + " tickets" : "0 tickets",
       },
       {
         heading: "Spent on tickets",
-        value: (roundState != 5 ? Number(stats.totalSpentOnTickets).toFixed(getFixedLength(Number(stats.totalSpentOnTickets)) + 3) : 0) + " BNB",
+        value: (roundState !== 5 ? Number(stats.totalSpentOnTickets).toFixed(getFixedLength(Number(stats.totalSpentOnTickets)) + 3) : 0) + " BNB",
       },
       {
         heading: "Burned Tokens (Buy back)",
-        value: roundState != 5 ? numberWithCommas(Number(stats.tokensBurned).toFixed(0)) : 0
+        value: roundState !== 5 ? numberWithCommas(Number(stats.tokensBurned).toFixed(0)) : 0
       },
     ];
 
@@ -343,17 +342,17 @@ export class Home extends Component {
         ticketsBought = Number(topBuyer.ticketsBought)
         lastBuy = formatAMPM(new Date(topBuyer.lastBuyTimestamp * 1000))
       }
-      const top = (index == 0 || index == 1 || index == 2)
+      const top = (index === 0 || index === 1 || index === 2)
 
-      return { rank: index + 1, address: this.addressCheck(roundState == 5 ? '' : address === username ? 'You' : address), tickets: roundState == 5 ? 'N/A' : this.naWrapper(ticketsBought), toWin: roundState == 5 ? 0 : top ? winnerAmounts[index + 1].toFixed(getFixedLength(winnerAmounts[index + 1]) + 3) + " BNB" : "0 BNB", lastBuy: roundState == 5 ? 'N/A' : this.naWrapper(lastBuy), overtake: 'buy', status: (index == 0 || index == 1 || index == 2) ? true : false, realAddress: address }
+      return { rank: index + 1, address: this.addressCheck(roundState === 5 ? '' : address === username ? 'You' : address), tickets: roundState === 5 ? 'N/A' : this.naWrapper(ticketsBought), toWin: roundState === 5 ? 0 : top ? winnerAmounts[index + 1].toFixed(getFixedLength(winnerAmounts[index + 1]) + 3) + " BNB" : "0 BNB", lastBuy: roundState === 5 ? 'N/A' : this.naWrapper(lastBuy), overtake: 'buy', status: (index === 0 || index === 1 || index === 2) ? true : false, realAddress: address }
     }
 
     const buyTickets = (wallet, contract, num, priceForTicket, getWallet, priceForTicketAhead, roundState) => {
       if (wallet && contract) {
         // contract.connect(wallet)
 
-        const tickPrice = roundState == 5 ? priceForTicket * 1.05 : priceForTicketAhead
-        const gas = roundState == 5 ? 7000000 : 2000000
+        const tickPrice = roundState === 5 ? priceForTicket * 1.05 : priceForTicketAhead
+        const gas = roundState === 5 ? 7000000 : 2000000
 
         // contract.buyExactTickets(num, {value: (Math.floor(num * tickPrice * 1e18)).toString()})
 
@@ -420,7 +419,7 @@ export class Home extends Component {
           <TopBlock data={topBarData[0]} />
           <TopBlock data={topBarData[1]} style={{ marginLeft: "2%" }} />
           {
-            this.props.mainState.roundState != 3 &&
+            this.props.mainState.roundState !== 3 &&
             <TopBlock data={topBarData[2]} style={{ marginRight: "2%" }} />
           }
           <TopBlock data={topBarData[3]} />
@@ -441,7 +440,7 @@ export class Home extends Component {
               </div>
               <div className="middle-block">
                 <div>
-                  <img src={downIco} onClick={() => this.increment(-1)} />
+                  <img src={downIco} onClick={() => this.increment(-1)} alt="down-icon" />
                   <span>
                     <input
                       type="number"
@@ -449,9 +448,9 @@ export class Home extends Component {
                       onChange={(e) => this.setState({ ticket: e.target.value })}
                       min="1"
                     />
-                    <span>{this.state.ticket == 1 ? `Ticket` : `Tickets`}</span>
+                    <span>{this.state.ticket === 1 ? `Ticket` : `Tickets`}</span>
                   </span>
-                  <img src={upIco} onClick={() => this.increment(1)} />
+                  <img src={upIco} onClick={() => this.increment(1)} alt="up-icon" />
                 </div>
                 <div className="input-blocks">
                   {inputs.map((i, k) => (
@@ -494,7 +493,7 @@ export class Home extends Component {
                 <table className="table">
                   <thead>
                     {table1params.map((i, k) => (
-                      (k != 5 || this.props.mainState.roundState == 1) &&
+                      (k !== 5 || this.props.mainState.roundState === 1) &&
                       <th key={k}>{i.replace(/([a-z])([A-Z])/g, "$1 $2")}</th>
                     ))}
                   </thead>
@@ -504,15 +503,15 @@ export class Home extends Component {
                         {table1params.map((m, n) => (
                           <td className={m}>
                             {
-                              n == 1 && i[m] != 'You' && i[m] != 'No Buyer' ?
+                              n === 1 && i[m] !== 'You' && i[m] !== 'No Buyer' ?
                                 (
                                   <a href={`https://bscscan.com/address/${i['realAddress']}`} target="_blank" rel="noopepener noreferrer">
                                     <span>{i[m]}</span>
                                   </a>
                                 ) :
                                 (
-                                  n == 5 ? (
-                                    this.props.mainState.roundState == 1 &&
+                                  n === 5 ? (
+                                    this.props.mainState.roundState === 1 &&
                                     <span onClick={() => {
                                       buyTickets(wallet, contract, i['Tickets'] && !isNaN(i['Tickets']) ? i['Tickets'] : 1, discountedPriceForTicket, getWallet, discountedPriceForTicketAhead, roundState, stats)
                                     }}>{i[m]}</span>
@@ -552,7 +551,7 @@ export class Home extends Component {
                               background: gettdstyle(i[m], i.status, m),
                             }}
                           >
-                            {m == "overtake" ? " " : i[m]}
+                            {m === "overtake" ? " " : i[m]}
                           </span>
                         </td>
                       ))}
