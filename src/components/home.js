@@ -538,17 +538,19 @@ export class Home extends Component {
             <div className="main-tt">
               <table className="table">
                 <thead>
-                  {table2params.map((i, k) => (
-                    <th key={k} className={"header-" + i}>
-                      {i.replace(/([a-z])([A-Z])/g, "$1 $2")}
-                    </th>
-                  ))}
+                  <tr>
+                    {table2params.map((i, k) => (
+                      <th key={k} className={"header-" + i}>
+                        {i.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                      </th>
+                    ))}
+                  </tr>
                 </thead>
                 <tbody>
                   {tableData2.map((i, k) => (
                     <tr key={k} className={"color-" + i.status}>
                       {table2params.map((m, n) => (
-                        <td key={k} className={m}>
+                        <td key={n} className={m}>
                           <span
                             style={{
                               background: gettdstyle(i[m], i.status, m),
