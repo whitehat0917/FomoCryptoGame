@@ -134,24 +134,24 @@ export class Home extends Component {
   }
 
   notify = () => {
-    toast(`You bought ${this.state.ticket === 1 ? this.state.ticket+" ticket" : this.state.ticket+" tickets"}`)
+    toast(`You bought ${this.state.ticket === 1 ? this.state.ticket + " ticket" : this.state.ticket + " tickets"}`)
   }
 
   componentDidMount() {
     this.timer = setInterval(() => this.setTimerText(), 250);
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
 
-    if (this.state.firstUpate === false) {
-      if (nextProps.mainState.stats && nextProps.mainState.stats.topBuyers[0] && (nextProps.mainState.stats.topBuyers[0].ticketsBought !== 0)) {
-
-        this.setState({
-          ticketsToBuy: nextProps.mainState.stats ? nextProps.mainState.stats.topBuyers[0] ? nextProps.mainState.stats.topBuyers[0].ticketsBought + 1 - nextProps.mainState.stats.userTicketsBought : 123 : 123,
+    if (state.firstUpate === false) {
+      if (props.mainState.stats && props.mainState.stats.topBuyers[0] && (props.mainState.stats.topBuyers[0].ticketsBought !== 0)) {
+        return {
+          ticketsToBuy: props.mainState.stats ? props.mainState.stats.topBuyers[0] ? props.mainState.stats.topBuyers[0].ticketsBought + 1 - props.mainState.stats.userTicketsBought : 123 : 123,
           firstUpdate: true
-        })
+        }
       }
     }
+    return null;
   }
 
   componentWillUnmount() {
@@ -238,8 +238,8 @@ export class Home extends Component {
   }
 
   render() {
-    const { stats, pot, buysDisabled, roundState, priceForTicketCurrent, settings, getWallet, wallet, priceForTicketAhead, contract, priceForTicket, currentRoundNumber, currentRoundPot, username, roundPotWinnersBreakdown } = this.props.mainState;
-    const { tabChanged, setTabChanged, setMenuOpened } = this.props;
+    const { stats, pot, buysDisabled, roundState, priceForTicketCurrent, settings, wallet, priceForTicketAhead, contract, priceForTicket, currentRoundNumber, currentRoundPot, username, roundPotWinnersBreakdown } = this.props.mainState;
+    const { tabChanged, setTabChanged, setMenuOpened, connect } = this.props;
 
     const winnerRecipients = [], winnerAmounts = [], winnerColors = []
     const discountedPriceForTicket = priceForTicket * (1 - stats.userBonus)
@@ -263,11 +263,7 @@ export class Home extends Component {
         shadowSrc: roundPotIcoPath,
       },
       {
-        heading: (
-          <p>
-            Time Left
-          </p>
-        ),
+        heading: (<></>),
         value: this.state.timerText,
         src: buyTicketIco,
         shadowSrc: buyTicketIcoPath,
@@ -347,7 +343,7 @@ export class Home extends Component {
       return { rank: index + 1, address: this.addressCheck(roundState === 5 ? '' : address === username ? 'You' : address), tickets: roundState === 5 ? 'N/A' : this.naWrapper(ticketsBought), toWin: roundState === 5 ? 0 : top ? winnerAmounts[index + 1].toFixed(getFixedLength(winnerAmounts[index + 1]) + 3) + " BNB" : "0 BNB", lastBuy: roundState === 5 ? 'N/A' : this.naWrapper(lastBuy), overtake: 'buy', status: (index === 0 || index === 1 || index === 2) ? true : false, realAddress: address }
     }
 
-    const buyTickets = (wallet, contract, num, priceForTicket, getWallet, priceForTicketAhead, roundState) => {
+    const buyTickets = (wallet, contract, num, priceForTicket, connect, priceForTicketAhead, roundState) => {
       if (wallet && contract) {
         // contract.connect(wallet)
 
@@ -378,14 +374,19 @@ export class Home extends Component {
 
         })
       } else {
-        getWallet()
+        connect()
       }
     }
 
     const tableData = [];
+    let overtakeStatus = false;
+    let tempTableData;
 
     for (let i = 0; i < 7; i++) {
-      tableData.push(getTopBuyer(i))
+      tempTableData = getTopBuyer(i);
+      tableData.push(tempTableData);
+      if (tempTableData['address'] !== 'No Buyer' && i['address'] !== 'You' && this.props.mainState.roundState === 1)
+        overtakeStatus = true;
     }
 
     const tableData2 = [];
@@ -466,7 +467,7 @@ export class Home extends Component {
                 <div
                   className="buy-button"
                   onClick={() => {
-                    buyTickets(wallet, contract, this.state.ticket, discountedPriceForTicket, getWallet, discountedPriceForTicketAhead, roundState, stats)
+                    buyTickets(wallet, contract, this.state.ticket, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
                   }}
                 >
                   {"buy"}
@@ -492,16 +493,18 @@ export class Home extends Component {
               <div className="main-tt">
                 <table className="table">
                   <thead>
-                    {table1params.map((i, k) => (
-                      (k !== 5 || this.props.mainState.roundState !== 1) &&
-                      <th key={k}>{i.replace(/([a-z])([A-Z])/g, "$1 $2")}</th>
-                    ))}
+                    <tr>
+                      {table1params.map((i, k) => (
+                        (k !== 5 || (this.props.mainState.roundState === 1 && overtakeStatus === true)) &&
+                        <th key={k}>{i.replace(/([a-z])([A-Z])/g, "$1 $2")}</th>
+                      ))}
+                    </tr>
                   </thead>
                   <tbody>
                     {tableData.map((i, k) => (
-                      <tr className={"color-" + i.status}>
+                      <tr key={k} className={"color-" + i.status}>
                         {table1params.map((m, n) => (
-                          <td className={m}>
+                          <td key={n} className={m}>
                             {
                               n === 1 && i[m] !== 'You' && i[m] !== 'No Buyer' ?
                                 (
@@ -511,9 +514,9 @@ export class Home extends Component {
                                 ) :
                                 (
                                   n === 5 ? (
-                                    (this.props.mainState.roundState === 1 && i['address'] !== 'No Buyer') &&
+                                    (this.props.mainState.roundState === 1 && i['address'] !== 'No Buyer' && i['address'] !== 'You') &&
                                     <span onClick={() => {
-                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? i['tickets'] : 1, discountedPriceForTicket, getWallet, discountedPriceForTicketAhead, roundState, stats)
+                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? i['tickets'] : 1, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
                                     }}>{i[m]}</span>
                                   ) : (
                                     <span>{i[m]}</span>
@@ -543,9 +546,9 @@ export class Home extends Component {
                 </thead>
                 <tbody>
                   {tableData2.map((i, k) => (
-                    <tr className={"color-" + i.status}>
+                    <tr key={k} className={"color-" + i.status}>
                       {table2params.map((m, n) => (
-                        <td className={m}>
+                        <td key={k} className={m}>
                           <span
                             style={{
                               background: gettdstyle(i[m], i.status, m),

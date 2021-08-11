@@ -66,14 +66,14 @@ const Block = ({ data }) => (
 const Notification = () => {
   const [modal, setModal] = useState(true);
   return (
-    <Modal isOpen={modal} onRequestClose={() => setModal(false)}>
+    <Modal isOpen={modal} ariaHideApp={false} onRequestClose={() => setModal(false)}>
       <div className="notification">
         <div className="main-heading">GAME RULES</div>
         <div style={{ padding: "15px" }}>
           <div className="_heading">{firstObj.heading}</div>
           <div className="first-obj">
             {firstObj.arr.map((i, k) => (
-              <Block data={i} />
+              <Block key={k} data={i} />
             ))}
           </div>
         </div>

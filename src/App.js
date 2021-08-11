@@ -383,6 +383,7 @@ class App extends Component {
               menuOpened={this.state.menuOpened}
               setMenuOpened={this.setMenuOpened}
               mainState={this.state}
+              connect={this.getMetamaskWallet}
             />
           }
         </div>

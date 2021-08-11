@@ -141,7 +141,7 @@ const LeftBar = ({ setTabChanged, menuOpened, mainState, connect }) => {
           </div>
         </div>
         {leftBarItem.map((i, k) => (
-          <LeftItem data={i} />
+          <LeftItem key={k} data={i} />
         ))}
       </div>
       <div className="_button">
