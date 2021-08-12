@@ -431,7 +431,7 @@ export class Home extends Component {
               <div className="_block left">
                 <div className="header">BUY tickets</div>
                 <div style={{ textAlign: 'left', marginBottom: '10px' }}>
-                  Buy {this.state.ticket} {this.state.ticket === 1 ? 'ticket' : 'tickets'} for {(this.state.ticket * (roundState == 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toPrecision(6)} BNB
+                  Buy {this.state.ticket} {this.state.ticket === 1 ? 'ticket' : 'tickets'} for {(this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toPrecision(6)} BNB
                 </div>
                 <DataBlock data={ticketsData[0]} heading2={"cost"} />
                 <DataBlock

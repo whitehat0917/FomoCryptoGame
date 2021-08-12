@@ -353,3 +353,8 @@ a{
 td.overtake{
   min-width: 70px;
 }
+@media only screen and (max-width: 800px) {
+  .main-body {
+    max-width: 100%;
+  }
+}
