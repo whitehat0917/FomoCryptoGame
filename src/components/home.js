@@ -81,7 +81,7 @@ const table1params = [
   "lastBuy",
   "overtake",
 ];
-const table2params = ["bnb", "address", "position", "overtake"];
+const table2params = ["bnb", "address", "percent payout", "overtake"];
 
 const nanCheck = (item) => {
   if (isNaN(item)) {
@@ -263,7 +263,7 @@ export class Home extends Component {
         shadowSrc: roundPotIcoPath,
       },
       {
-        heading: (<></>),
+        heading: (<>{this.props.mainState.roundState === 1 ? "Time Left" : ""}</>),
         value: this.state.timerText,
         src: buyTicketIco,
         shadowSrc: buyTicketIcoPath,
@@ -385,7 +385,7 @@ export class Home extends Component {
     for (let i = 0; i < 7; i++) {
       tempTableData = getTopBuyer(i);
       tableData.push(tempTableData);
-      if (tempTableData['address'] !== 'No Buyer' && i['address'] !== 'You' && this.props.mainState.roundState === 1)
+      if (tempTableData['address'] !== 'No Buyer' && tempTableData['address'] !== 'You' && this.props.mainState.roundState === 1)
         overtakeStatus = true;
     }
 
@@ -396,7 +396,7 @@ export class Home extends Component {
         {
           bnb: roundPotWinnersBreakdown[i][1].toFixed(getFixedLength(roundPotWinnersBreakdown[i][1]) + 3) + " BNB",
           address: roundPotWinnersBreakdown[i][0],
-          position: roundPotWinnersBreakdown[i][2],
+          position: roundPotWinnersBreakdown[i][2] + "%",
           overtake: roundPotWinnersBreakdown[i][2],
           status: true
         }
@@ -420,7 +420,7 @@ export class Home extends Component {
           <TopBlock data={topBarData[0]} />
           <TopBlock data={topBarData[1]} style={{ marginLeft: "2%" }} />
           {
-            this.props.mainState.roundState !== 3 &&
+            this.props.mainState.roundState !== 3 && this.props.mainState.roundState !== 0 &&
             <TopBlock data={topBarData[2]} style={{ marginRight: "2%" }} />
           }
           <TopBlock data={topBarData[3]} />
@@ -430,6 +430,9 @@ export class Home extends Component {
             <div className="main-blocks">
               <div className="_block left">
                 <div className="header">BUY tickets</div>
+                <div style={{ textAlign: 'left', marginBottom: '10px' }}>
+                  Buy {this.state.ticket} {this.state.ticket === 1 ? 'ticket' : 'tickets'} for {(this.state.ticket * (roundState == 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toPrecision(6)} BNB
+                </div>
                 <DataBlock data={ticketsData[0]} heading2={"cost"} />
                 <DataBlock
                   data={ticketsData[1]}
@@ -540,6 +543,7 @@ export class Home extends Component {
                 <thead>
                   <tr>
                     {table2params.map((i, k) => (
+                      i !== 'overtake' &&
                       <th key={k} className={"header-" + i}>
                         {i.replace(/([a-z])([A-Z])/g, "$1 $2")}
                       </th>
@@ -556,7 +560,7 @@ export class Home extends Component {
                               background: gettdstyle(i[m], i.status, m),
                             }}
                           >
-                            {m === "overtake" ? " " : i[m]}
+                            {m === "overtake" ? " " : m === "percent payout" ? i['position'] : i[m]}
                           </span>
                         </td>
                       ))}
