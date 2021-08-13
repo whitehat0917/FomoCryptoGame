@@ -133,8 +133,8 @@ export class Home extends Component {
       this.setState({ ticket: +this.state.ticket + val })
   }
 
-  notify = () => {
-    toast(`You bought ${this.state.ticket === 1 ? this.state.ticket + " ticket" : this.state.ticket + " tickets"}`)
+  notify = (num) => {
+    toast(`You bought ${num === 1 ? num + " ticket" : num + " tickets"}`)
   }
 
   componentDidMount() {
@@ -368,7 +368,7 @@ export class Home extends Component {
           wallet.sendTransaction(tx).then(confirmation => {
             // this.setState({ ticketsToBuy: num })
             setTimeout(() => {
-              this.notify();
+              this.notify(num);
             }, 2000);
           })
 
@@ -385,7 +385,7 @@ export class Home extends Component {
     for (let i = 0; i < 7; i++) {
       tempTableData = getTopBuyer(i);
       tableData.push(tempTableData);
-      if (tempTableData['address'] !== 'No Buyer' && tempTableData['address'] !== 'You' && this.props.mainState.roundState === 1)
+      if (getTopBuyer(0)['address'] !== 'You' && tempTableData['address'] !== 'No Buyer' && tempTableData['address'] !== 'You' && this.props.mainState.roundState === 1)
         overtakeStatus = true;
     }
 
@@ -430,9 +430,6 @@ export class Home extends Component {
             <div className="main-blocks">
               <div className="_block left">
                 <div className="header">BUY tickets</div>
-                <div style={{ textAlign: 'left', marginBottom: '10px' }}>
-                  Buy {this.state.ticket} {this.state.ticket === 1 ? 'ticket' : 'tickets'} for {(this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toPrecision(6)} BNB
-                </div>
                 <DataBlock data={ticketsData[0]} heading2={"cost"} />
                 <DataBlock
                   data={ticketsData[1]}
@@ -473,7 +470,7 @@ export class Home extends Component {
                     buyTickets(wallet, contract, this.state.ticket, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
                   }}
                 >
-                  {"buy"}
+                  {"buy (" + (this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toFixed(getFixedLength((this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)))+3) + " BNB)"}
                 </div>
               </div>
               <div className="_block right">
@@ -517,9 +514,9 @@ export class Home extends Component {
                                 ) :
                                 (
                                   n === 5 ? (
-                                    (this.props.mainState.roundState === 1 && i['address'] !== 'No Buyer' && i['address'] !== 'You') &&
+                                    overtakeStatus === true &&
                                     <span onClick={() => {
-                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? i['tickets'] : 1, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
+                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? (i['tickets']+1-stats.userTicketsBought) : 1, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
                                     }}>{i[m]}</span>
                                   ) : (
                                     <span>{i[m]}</span>
