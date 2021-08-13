@@ -103,14 +103,14 @@ class App extends Component {
     const array = []
 
 
-    const add = (name, percent, color, amount, bonus, tokens) => {
+    const add = (name, percent, color, amount, address, tokens) => {
       // array.push([name, amount ? <span className={`${bonus == 0 ? 'text-danger' : 'text-success'}`}><span className="text-light">{amount}</span> BNB<br/>{(bonus).toFixed(1)}% payout bonus for holding {numberWithCommas(tokens)} tokens</span> : <span>0</span>, percent, color])
 
-      array.push([name, amount, percent, color])
+      array.push([name, amount, percent, color, address])
     }
 
     if (stats.lastBuyer !== '0x0000000000000000000000000000000000000000') {
-      add(shortenAddress(stats.lastBuyer) + ' - Last Buyer', activeSettings.lastBuyerPayoutPercent, "#F66D44", stats.lastBuyerPayout, stats.lastBuyerBonus, stats.lastBuyerBalance)
+      add(shortenAddress(stats.lastBuyer) + ' - Last Buyer', activeSettings.lastBuyerPayoutPercent, "#F66D44", stats.lastBuyerPayout, stats.lastBuyer, stats.lastBuyerBalance)
     } else {
       add('Last Buyer', activeSettings.lastBuyerPayoutPercent, "#F66D44", stats.lastBuyerPayout, stats.lastBuyerBonus, stats.lastBuyerBalance)
     }
@@ -123,7 +123,7 @@ class App extends Component {
     } else {
       for (let i = 0; i < activeSettings.placePayoutPercents.length; i++) {
         add(stats.topBuyers[i] ? shortenAddress(stats.topBuyers[i].address) + ' - ' + nthPlaceWords[i] + ' Buyer' :
-          nthPlaceWords[i] + ' Buyer', activeSettings.placePayoutPercents[i], nthPlaceColors[i], stats.topBuyers[i] ? stats.topBuyers[i].payout : 0, stats.topBuyers[i] ? stats.topBuyers[i].bonus : 0, stats.topBuyers[i] ? stats.topBuyers[i].balance : 0)
+          nthPlaceWords[i] + ' Buyer', activeSettings.placePayoutPercents[i], nthPlaceColors[i], stats.topBuyers[i] ? stats.topBuyers[i].payout : 0, stats.topBuyers[i] ? stats.topBuyers[i].address : "", stats.topBuyers[i] ? stats.topBuyers[i].balance : 0)
       }
     }
 

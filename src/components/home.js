@@ -398,6 +398,7 @@ export class Home extends Component {
           address: roundPotWinnersBreakdown[i][0],
           position: roundPotWinnersBreakdown[i][2] + "%",
           overtake: roundPotWinnersBreakdown[i][2],
+          realAddress: roundPotWinnersBreakdown[i][4],
           status: true
         }
       );
@@ -470,7 +471,7 @@ export class Home extends Component {
                     buyTickets(wallet, contract, this.state.ticket, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
                   }}
                 >
-                  {"buy (" + (this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toFixed(getFixedLength((this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)))+3) + " BNB)"}
+                  {"buy (" + (this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent)).toFixed(getFixedLength((this.state.ticket * (roundState === 5 ? discountedPriceForTicket : discountedPriceForTicketCurrent))) + 3) + " BNB)"}
                 </div>
               </div>
               <div className="_block right">
@@ -516,7 +517,7 @@ export class Home extends Component {
                                   n === 5 ? (
                                     overtakeStatus === true &&
                                     <span onClick={() => {
-                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? (i['tickets']+1-stats.userTicketsBought) : 1, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
+                                      buyTickets(wallet, contract, i['tickets'] && !isNaN(i['tickets']) ? (i['tickets'] + 1 - stats.userTicketsBought) : 1, discountedPriceForTicket, connect, discountedPriceForTicketAhead, roundState, stats)
                                     }}>{i[m]}</span>
                                   ) : (
                                     <span>{i[m]}</span>
@@ -552,13 +553,27 @@ export class Home extends Component {
                     <tr key={k} className={"color-" + i.status}>
                       {table2params.map((m, n) => (
                         <td key={n} className={m}>
-                          <span
-                            style={{
-                              background: gettdstyle(i[m], i.status, m),
-                            }}
-                          >
-                            {m === "overtake" ? " " : m === "percent payout" ? i['position'] : i[m]}
-                          </span>
+                          {
+                            m === "address" ? (
+                              <a style={{ textDecoration: 'none' }} href={"https://bscscan.com/address/" + i['realAddress']} rel="noopener noreferrer" target="_blank">
+                                <span
+                                  style={{
+                                    background: gettdstyle(i[m], i.status, m),
+                                  }}
+                                >
+                                  {i[m]}
+                                </span>
+                              </a>
+                            ) : (
+                              <span
+                                style={{
+                                  background: gettdstyle(i[m], i.status, m),
+                                }}
+                              >
+                                {m === "overtake" ? " " : m === "percent payout" ? i['position'] : i[m]}
+                              </span>
+                            )
+                          }
                         </td>
                       ))}
                     </tr>
